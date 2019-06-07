@@ -21,7 +21,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
+        new Request().execute();
         Button first = findViewById(R.id.button);
 
         Toast.makeText(MainActivity.this, "111", Toast.LENGTH_SHORT).show();
@@ -29,7 +29,7 @@ public class MainActivity extends AppCompatActivity {
         first.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                new Request().execute();
+
             }
         });
     }
