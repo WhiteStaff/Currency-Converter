@@ -1,22 +1,12 @@
 package com.example.currencyconverter;
 
 import android.os.AsyncTask;
-import android.util.Log;
-import android.widget.Toast;
-
-import java.io.BufferedInputStream;
 import java.io.BufferedReader;
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-
-import javax.net.ssl.HttpsURLConnection;
 
 public class Request extends AsyncTask<String, Integer, String>{
 
@@ -29,7 +19,18 @@ public class Request extends AsyncTask<String, Integer, String>{
             HttpURLConnection connection = (HttpURLConnection)url.openConnection();
 
             if (connection.getResponseCode() == HttpURLConnection.HTTP_OK) {
-                return "s";
+                BufferedReader reader = new BufferedReader(
+                        new InputStreamReader(connection.getInputStream(), "utf8"));
+                String answer = "";
+                String line = null;
+
+                while ((line = reader.readLine()) != null) {
+                    answer += line;
+                }
+
+                reader.close();
+
+
             } else {
                 return "f";
             }
