@@ -13,6 +13,8 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.concurrent.ExecutionException;
@@ -34,6 +36,7 @@ public class MainActivity extends AppCompatActivity {
         Button button = findViewById(R.id.button);
         final int[] positions = {0, 0};
         final String[] date = {format.format(new Date())};
+        ;
 
         try {
             helpdata = new Request().execute(format.format(new Date())).get().getCurrenciesShortnames();
@@ -49,9 +52,9 @@ public class MainActivity extends AppCompatActivity {
             public void onSelectedDayChange(CalendarView calendarView, int i, int i1, int i2) {
                 String day, month;
                 day = Integer.toString(i2);
-                month = Integer.toString(i1+1);
+                month = Integer.toString(i1 + 1);
                 if (i2 < 10) day = "0" + i2;
-                if (i1 < 10) month = "0" + (i1+1);
+                if (i1 < 10) month = "0" + (i1 + 1);
                 date[0] = day + "/" + month + "/" + i;
             }
         });
@@ -59,8 +62,6 @@ public class MainActivity extends AppCompatActivity {
         // адаптер
         ArrayAdapter<String> inputAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, data);
         inputAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-
-
 
 
         inputValute.setAdapter(inputAdapter);
@@ -111,11 +112,24 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 try {
                     CurrencyStore help = new Request().execute(date[0]).get();
-                    double from = help.getExchangeRate(positions[0]);
-                    double to = help.getExchangeRate(positions[1]);
-                    double count = Double.parseDouble(et.getText().toString());
+                    if (help.isEmpty()) {
+                        out.setText("Что-то пошло не так");
+                        return;
+                    }
+                    if (help.getByShortname(data[positions[0]]) == null ||
+                            (help.getByShortname(data[positions[1]]) == null))
+                    {
+                        out.setText("Цб не знал, ой");
+                        return;
+                    }
+                    double from = help.getByShortname(data[positions[0]]).getExchangeRate();
+                    double to = help.getByShortname(data[positions[1]]).getExchangeRate();
+                    String valuteToConvert = et.getText().toString();
+                    if (valuteToConvert.equals("")) valuteToConvert = "0";
+                    double count = Double.parseDouble(valuteToConvert);
                     out.setText(CurrencyCalculator.Calculate(
-                            from, to , count));
+                            from, to, count));
+
                 } catch (ExecutionException e) {
                     e.printStackTrace();
                 } catch (InterruptedException e) {

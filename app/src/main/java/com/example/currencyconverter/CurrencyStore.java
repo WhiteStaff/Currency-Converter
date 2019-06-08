@@ -24,4 +24,18 @@ public class CurrencyStore {
     {
         return myCurrencies.get(i).getRate()/myCurrencies.get(i).getCount();
     }
+
+    public Currency getByShortname(String shortName)
+    {
+        for (int i =0; i < myCurrencies.size(); i++)
+        {
+            if (myCurrencies.get(i).getCharCode().equals(shortName)) return myCurrencies.get(i);
+        }
+        return null;
+    }
+
+    public boolean isEmpty()
+    {
+        return myCurrencies.size() == 1;
+    }
 }

@@ -30,4 +30,11 @@ public class Currency {
     {
         return exchangeRate;
     }
+
+    public double getExchangeRate()
+    {
+        return exchangeRate/count;
+    }
+
+
 }

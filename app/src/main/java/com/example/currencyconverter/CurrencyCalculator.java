@@ -1,12 +1,13 @@
 package com.example.currencyconverter;
 
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
+
 public class CurrencyCalculator {
-    private double from;
-    private double to;
-    private double count;
+    private static NumberFormat  formatter = new DecimalFormat("#0.0000");
 
     public static String Calculate(double from, double to, double count)
     {
-        return Double.toString (count*from/to);
+        return formatter.format(count*from/to);
     }
 }
