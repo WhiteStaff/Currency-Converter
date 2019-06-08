@@ -1,6 +1,4 @@
-package com.example.currencyconverter;
-
-import androidx.appcompat.app.AppCompatActivity;
+package com.example.currencyconverter.Activities;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -13,9 +11,14 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.currencyconverter.CurrencyActions.CurrencyCalculator;
 import com.example.currencyconverter.CurrencyActions.CurrencyStore;
+import com.example.currencyconverter.Logs.Log;
+import com.example.currencyconverter.Logs.LogsOperations;
+import com.example.currencyconverter.R;
+import com.example.currencyconverter.Request;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -130,9 +133,11 @@ public class MainActivity extends AppCompatActivity {
                     String valuteToConvert = et.getText().toString();
                     if (valuteToConvert.equals("")) valuteToConvert = "0";
                     double count = Double.parseDouble(valuteToConvert);
-                    out.setText(CurrencyCalculator.Calculate(
-                            from, to, count));
-
+                    String result = CurrencyCalculator.Calculate(
+                            from, to, count);
+                    out.setText(result);
+                    Log log = new Log(count, data[positions[0]], data[positions[1]],result, date[0]);
+                    LogsOperations.addNewLog(log, getApplicationContext());
                 } catch (ExecutionException e) {
                     e.printStackTrace();
                 } catch (InterruptedException e) {
