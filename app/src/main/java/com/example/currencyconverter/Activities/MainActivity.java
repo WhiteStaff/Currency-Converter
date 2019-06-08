@@ -129,7 +129,7 @@ public class MainActivity extends AppCompatActivity {
                 try {
                     CurrencyStore help = new Request().execute(date[0]).get();
                     if (help.isEmpty()) {
-                        out.setText("Скорее всего плохая дата");
+                        out.setText("Нет курса");
                         return;
                     }
                     if (help.getByShortname(data[positions[0]]) == null ||
