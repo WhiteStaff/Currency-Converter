@@ -2,6 +2,8 @@ package com.example.currencyconverter;
 
 import android.os.AsyncTask;
 
+import com.example.currencyconverter.CurrencyActions.CurrencyStore;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -10,9 +12,8 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
-import java.util.List;
 
-public class Request extends AsyncTask<String, Integer, CurrencyStore >{
+public class Request extends AsyncTask<String, Integer, CurrencyStore>{
 
     @Override
     protected CurrencyStore doInBackground(String... arg)  {

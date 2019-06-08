@@ -2,6 +2,7 @@ package com.example.currencyconverter;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
@@ -13,8 +14,9 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 
-import java.text.DecimalFormat;
-import java.text.NumberFormat;
+import com.example.currencyconverter.CurrencyActions.CurrencyCalculator;
+import com.example.currencyconverter.CurrencyActions.CurrencyStore;
+
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.concurrent.ExecutionException;
@@ -33,10 +35,11 @@ public class MainActivity extends AppCompatActivity {
         CalendarView calendar = findViewById(R.id.calendarView);
         Spinner inputValute = findViewById(R.id.spinner);
         final Spinner outputValute = findViewById(R.id.spinner4);
+        final Button logButton = findViewById(R.id.logbutton);
         Button button = findViewById(R.id.button);
         final int[] positions = {0, 0};
         final String[] date = {format.format(new Date())};
-        ;
+
 
         try {
             helpdata = new Request().execute(format.format(new Date())).get().getCurrenciesShortnames();
@@ -137,6 +140,15 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
+
+        logButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getApplicationContext(), LogsActivity.class);
+                startActivity(intent);
+            }
+        });
+
 
     }
 }

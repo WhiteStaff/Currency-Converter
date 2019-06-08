@@ -1,5 +1,8 @@
 package com.example.currencyconverter;
 
+import com.example.currencyconverter.CurrencyActions.Currency;
+import com.example.currencyconverter.CurrencyActions.CurrencyStore;
+
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import org.w3c.dom.Document;

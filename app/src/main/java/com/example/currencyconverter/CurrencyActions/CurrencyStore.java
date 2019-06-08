@@ -1,4 +1,6 @@
-package com.example.currencyconverter;
+package com.example.currencyconverter.CurrencyActions;
+
+import com.example.currencyconverter.CurrencyActions.Currency;
 
 import java.util.List;
 
@@ -18,11 +20,6 @@ public class CurrencyStore {
             result[i] = myCurrencies.get(i).getCharCode();
         }
         return result;
-    }
-
-    public double getExchangeRate(int i)
-    {
-        return myCurrencies.get(i).getRate()/myCurrencies.get(i).getCount();
     }
 
     public Currency getByShortname(String shortName)

@@ -1,4 +1,4 @@
-package com.example.currencyconverter;
+package com.example.currencyconverter.CurrencyActions;
 
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
