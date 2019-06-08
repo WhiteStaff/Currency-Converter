@@ -3,6 +3,8 @@ package com.example.currencyconverter.Activities;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.InputType;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -19,7 +21,7 @@ import com.example.currencyconverter.CurrencyActions.CurrencyStore;
 import com.example.currencyconverter.Logs.Log;
 import com.example.currencyconverter.Logs.LogsOperations;
 import com.example.currencyconverter.R;
-import com.example.currencyconverter.Request;
+import com.example.currencyconverter.Network.Request;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -27,10 +29,13 @@ import java.util.concurrent.ExecutionException;
 
 public class MainActivity extends AppCompatActivity {
 
+    private CurrencyStore store = null;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
         String[] helpdata = null;
         final SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
         final EditText et = findViewById(R.id.valuteInput);
@@ -40,14 +45,14 @@ public class MainActivity extends AppCompatActivity {
         CalendarView calendar = findViewById(R.id.calendarView);
         Spinner inputValute = findViewById(R.id.spinner);
         final Spinner outputValute = findViewById(R.id.spinner4);
-        final Button logButton = findViewById(R.id.logbutton);
         Button button = findViewById(R.id.button);
         final int[] positions = {0, 0};
         final String[] date = {format.format(new Date())};
 
 
         try {
-            helpdata = new Request().execute(format.format(new Date())).get().getCurrenciesShortnames();
+            store = new Request().execute(format.format(new Date())).get();
+            helpdata = store.getCurrenciesShortnames();
         } catch (ExecutionException e) {
             e.printStackTrace();
         } catch (InterruptedException e) {
@@ -121,7 +126,7 @@ public class MainActivity extends AppCompatActivity {
                 try {
                     CurrencyStore help = new Request().execute(date[0]).get();
                     if (help.isEmpty()) {
-                        out.setText("Что-то пошло не так");
+                        out.setText("Скорее всего плохая дата");
                         return;
                     }
                     if (help.getByShortname(data[positions[0]]) == null ||
@@ -156,15 +161,32 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        logButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
+
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+
+        getMenuInflater().inflate(R.menu.main_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+
+        switch(id){
+            case R.id.info :
+                Intent intent1 = new Intent(getApplicationContext(), InfoActivity.class);
+                intent1.putExtra("data", store.infoToString());
+                startActivity(intent1);
+                return true;
+            case R.id.log:
                 Intent intent = new Intent(getApplicationContext(), LogsActivity.class);
                 startActivity(intent);
-            }
-        });
-
-
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }
 

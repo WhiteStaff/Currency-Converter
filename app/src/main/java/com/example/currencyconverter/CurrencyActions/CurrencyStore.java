@@ -1,7 +1,5 @@
 package com.example.currencyconverter.CurrencyActions;
 
-import com.example.currencyconverter.CurrencyActions.Currency;
-
 import java.util.List;
 
 public class CurrencyStore {
@@ -34,5 +32,15 @@ public class CurrencyStore {
     public boolean isEmpty()
     {
         return myCurrencies.size() == 1;
+    }
+
+    public String[] infoToString()
+    {
+        String[] result = new String[myCurrencies.size()];
+        for (int i = 0; i < myCurrencies.size(); i++)
+        {
+            result[i] = myCurrencies.get(i).getCharCode() + " - " + myCurrencies.get(i).getName();
+        }
+        return result;
     }
 }

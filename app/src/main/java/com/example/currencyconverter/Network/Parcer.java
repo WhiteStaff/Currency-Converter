@@ -1,16 +1,18 @@
-package com.example.currencyconverter;
+package com.example.currencyconverter.Network;
 
 import com.example.currencyconverter.CurrencyActions.Currency;
 import com.example.currencyconverter.CurrencyActions.CurrencyStore;
 
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
 import org.w3c.dom.Document;
 import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
+
 import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
 
 public class Parcer {
 

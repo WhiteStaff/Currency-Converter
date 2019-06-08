@@ -36,5 +36,7 @@ public class Currency {
         return exchangeRate/count;
     }
 
-
+    public String getName() {
+        return name;
+    }
 }
