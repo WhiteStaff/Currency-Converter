@@ -22,7 +22,9 @@ public class Request extends AsyncTask<String, Integer, CurrencyStore>{
         try {
             URL url = new URL("http://www.cbr.ru/scripts/XML_daily.asp?date_req="+arg[0]);
             HttpURLConnection connection = (HttpURLConnection)url.openConnection();
-
+            connection.connect();
+            connection.setRequestMethod("GET");
+            int a = connection.getResponseCode();
             if (connection.getResponseCode() == HttpURLConnection.HTTP_OK) {
                 BufferedReader reader = new BufferedReader(
                         new InputStreamReader(connection.getInputStream(), "windows-1251"));

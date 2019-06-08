@@ -132,7 +132,15 @@ public class MainActivity extends AppCompatActivity {
                     double to = help.getByShortname(data[positions[1]]).getExchangeRate();
                     String valuteToConvert = et.getText().toString();
                     if (valuteToConvert.equals("")) valuteToConvert = "0";
-                    double count = Double.parseDouble(valuteToConvert);
+                    double count = 0.0;
+                    try {
+                         count = Double.parseDouble(valuteToConvert);
+                    }
+                    catch(Exception e){
+                        out.setText("Введи число");
+                        return;
+                    }
+
                     String result = CurrencyCalculator.Calculate(
                             from, to, count);
                     out.setText(result);
