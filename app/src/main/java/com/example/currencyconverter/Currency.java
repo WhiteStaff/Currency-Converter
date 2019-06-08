@@ -20,4 +20,14 @@ public class Currency {
     {
         return charCode;
     }
+
+    public int getCount()
+    {
+        return count;
+    }
+
+    public double getRate()
+    {
+        return exchangeRate;
+    }
 }

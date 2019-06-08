@@ -10,12 +10,6 @@ public class CurrencyStore {
         myCurrencies = currencies;
     }
 
-    public int getCount()
-    {
-        if (myCurrencies.isEmpty()) return -1;
-        return myCurrencies.size();
-    }
-
     public String[] getCurrenciesShortnames()
     {
         String [] result = new  String[myCurrencies.size()];
@@ -24,5 +18,10 @@ public class CurrencyStore {
             result[i] = myCurrencies.get(i).getCharCode();
         }
         return result;
+    }
+
+    public double getExchangeRate(int i)
+    {
+        return myCurrencies.get(i).getRate()/myCurrencies.get(i).getCount();
     }
 }
