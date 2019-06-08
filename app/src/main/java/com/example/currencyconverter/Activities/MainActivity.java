@@ -13,6 +13,7 @@ import android.widget.CalendarView;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -20,8 +21,8 @@ import com.example.currencyconverter.CurrencyActions.CurrencyCalculator;
 import com.example.currencyconverter.CurrencyActions.CurrencyStore;
 import com.example.currencyconverter.Logs.Log;
 import com.example.currencyconverter.Logs.LogsOperations;
-import com.example.currencyconverter.R;
 import com.example.currencyconverter.Network.Request;
+import com.example.currencyconverter.R;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -52,12 +53,14 @@ public class MainActivity extends AppCompatActivity {
 
         try {
             store = new Request().execute(format.format(new Date())).get();
-            helpdata = store.getCurrenciesShortnames();
-        } catch (ExecutionException e) {
-            e.printStackTrace();
-        } catch (InterruptedException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
+        if (store == null) {
+            Toast.makeText(this, "Проверьте подключение к интернету", Toast.LENGTH_LONG).show();
+            return;
+        }
+        helpdata = store.getCurrenciesShortnames();
         final String[] data = helpdata;
 
         calendar.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
