@@ -2,6 +2,7 @@ package com.example.currencyconverter.Activities;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.InputType;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -33,6 +34,7 @@ public class MainActivity extends AppCompatActivity {
         String[] helpdata = null;
         final SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
         final EditText et = findViewById(R.id.valuteInput);
+        et.setRawInputType(InputType.TYPE_CLASS_NUMBER);
         final TextView out = findViewById(R.id.valuteOutput);
         TextView to = findViewById(R.id.to);
         CalendarView calendar = findViewById(R.id.calendarView);
