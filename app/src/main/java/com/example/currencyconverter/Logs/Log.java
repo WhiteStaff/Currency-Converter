@@ -48,8 +48,7 @@ public class Log {
         this.value = value;
     }
 
-    public Log(double count, String currencyFrom, String currencyTo, String value, String date)
-    {
+    public Log(double count, String currencyFrom, String currencyTo, String value, String date) {
         this.count = Double.toString(count);
         this.currencyFrom = currencyFrom;
         this.currencyTo = currencyTo;
@@ -57,8 +56,7 @@ public class Log {
         this.date = date;
     }
 
-    public Log()
-    {
+    public Log() {
 
     }
 

@@ -13,15 +13,15 @@ import java.net.URL;
 import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
 
-public class Request extends AsyncTask<String, Integer, CurrencyStore>{
+public class Request extends AsyncTask<String, Integer, CurrencyStore> {
 
     @Override
-    protected CurrencyStore doInBackground(String... arg)  {
+    protected CurrencyStore doInBackground(String... arg) {
 
 
         try {
-            URL url = new URL("http://www.cbr.ru/scripts/XML_daily.asp?date_req="+arg[0]);
-            HttpURLConnection connection = (HttpURLConnection)url.openConnection();
+            URL url = new URL("http://www.cbr.ru/scripts/XML_daily.asp?date_req=" + arg[0]);
+            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
             connection.connect();
             connection.setRequestMethod("GET");
             int a = connection.getResponseCode();
@@ -36,7 +36,7 @@ public class Request extends AsyncTask<String, Integer, CurrencyStore>{
                 }
 
                 reader.close();
-                answer = answer.replace(" encoding=\"windows-1251\""," encoding=\"utf-8\"");
+                answer = answer.replace(" encoding=\"windows-1251\"", " encoding=\"utf-8\"");
                 Charset cset = Charset.forName("UTF-8");
                 ByteBuffer buf = cset.encode(answer);
                 byte[] b = buf.array();

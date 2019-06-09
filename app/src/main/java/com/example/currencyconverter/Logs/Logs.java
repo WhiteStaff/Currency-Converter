@@ -16,11 +16,11 @@ public class Logs {
     }
 
     public void addLog(Log log) {
-        while (logs.size() > 9 ) {
+        while (logs.size() > 9) {
             for (int i = 0; i < logs.size() - 1; i++) {
                 logs.set(i, logs.get(i + 1));
             }
-            logs.remove(logs.size()-1);
+            logs.remove(logs.size() - 1);
         }
         logs.add(log);
     }

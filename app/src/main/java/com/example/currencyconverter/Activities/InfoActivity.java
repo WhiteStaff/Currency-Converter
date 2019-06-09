@@ -18,8 +18,7 @@ public class InfoActivity extends AppCompatActivity {
         TextView view = findViewById(R.id.infoView);
         view.setMovementMethod(new ScrollingMovementMethod());
         String info = "";
-        for (int i = 0; i < data.length; i++)
-        {
+        for (int i = 0; i < data.length; i++) {
             info += data[i] + "\n";
         }
         view.setText(info);

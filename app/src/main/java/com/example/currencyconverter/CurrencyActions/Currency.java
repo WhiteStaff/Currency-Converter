@@ -7,8 +7,7 @@ public class Currency {
     private String name;
     private double exchangeRate;
 
-    public Currency(String code, String charCode, Integer count, String name, double exchangeRate)
-    {
+    public Currency(String code, String charCode, Integer count, String name, double exchangeRate) {
         this.code = code;
         this.charCode = charCode;
         this.count = count;
@@ -16,24 +15,20 @@ public class Currency {
         this.exchangeRate = exchangeRate;
     }
 
-    public String getCharCode()
-    {
+    public String getCharCode() {
         return charCode;
     }
 
-    public int getCount()
-    {
+    public int getCount() {
         return count;
     }
 
-    public double getRate()
-    {
+    public double getRate() {
         return exchangeRate;
     }
 
-    public double getExchangeRate()
-    {
-        return exchangeRate/count;
+    public double getExchangeRate() {
+        return exchangeRate / count;
     }
 
     public String getName() {

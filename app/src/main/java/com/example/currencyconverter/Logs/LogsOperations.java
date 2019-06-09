@@ -39,20 +39,17 @@ public class LogsOperations {
         return null;
     }
 
-    public static void addNewLog(Log newLog, Context context)
-    {
+    public static void addNewLog(Log newLog, Context context) {
         Logs logs = getLogs(context);
         logs.addLog(newLog);
         saveLogsAsJSON(logs, context);
     }
 
-    public static void saveLogsAsJSON(Logs logs, Context context)
-    {
+    public static void saveLogsAsJSON(Logs logs, Context context) {
         mCreateAndSaveFile(JSON.toJSONString(logs), context);
     }
 
-    public static Logs getLogs(Context context)
-    {
+    public static Logs getLogs(Context context) {
         String jsonData = mReadJsonData(context);
         Logs logs = new Logs();
         if (jsonData != null) logs = JSON.parseObject(jsonData, Logs.class);
