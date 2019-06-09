@@ -13,7 +13,6 @@ import android.widget.CalendarView;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -57,7 +56,7 @@ public class MainActivity extends AppCompatActivity {
             e.printStackTrace();
         }
         if (store == null) {
-            Toast.makeText(this, "Проверьте подключение к интернету", Toast.LENGTH_LONG).show();
+            out.setText("Нет интернета");
             return;
         }
         helpdata = store.getCurrenciesShortnames();
@@ -133,8 +132,7 @@ public class MainActivity extends AppCompatActivity {
                         return;
                     }
                     if (help.getByShortname(data[positions[0]]) == null ||
-                            (help.getByShortname(data[positions[1]]) == null))
-                    {
+                            (help.getByShortname(data[positions[1]]) == null)) {
                         out.setText("Цб не знал, ой");
                         return;
                     }
@@ -144,9 +142,8 @@ public class MainActivity extends AppCompatActivity {
                     if (valuteToConvert.equals("")) valuteToConvert = "0";
                     double count = 0.0;
                     try {
-                         count = Double.parseDouble(valuteToConvert);
-                    }
-                    catch(Exception e){
+                        count = Double.parseDouble(valuteToConvert);
+                    } catch (Exception e) {
                         out.setText("Введи число");
                         return;
                     }
@@ -154,7 +151,7 @@ public class MainActivity extends AppCompatActivity {
                     String result = CurrencyCalculator.Calculate(
                             from, to, count);
                     out.setText(result);
-                    Log log = new Log(count, data[positions[0]], data[positions[1]],result, date[0]);
+                    Log log = new Log(count, data[positions[0]], data[positions[1]], result, date[0]);
                     LogsOperations.addNewLog(log, getApplicationContext());
                 } catch (ExecutionException e) {
                     e.printStackTrace();
@@ -178,10 +175,13 @@ public class MainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
 
-        switch(id){
-            case R.id.info :
+        switch (id) {
+            case R.id.info:
                 Intent intent1 = new Intent(getApplicationContext(), InfoActivity.class);
-                intent1.putExtra("data", store.infoToString());
+                if (store == null)
+                    intent1.putExtra("data", new String[]{"Без интернета невозможно получение справки"});
+                else
+                    intent1.putExtra("data", store.infoToString());
                 startActivity(intent1);
                 return true;
             case R.id.log:

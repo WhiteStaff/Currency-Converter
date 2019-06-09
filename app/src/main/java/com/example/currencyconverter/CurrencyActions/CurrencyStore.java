@@ -37,6 +37,7 @@ public class CurrencyStore {
     public String[] infoToString()
     {
         String[] result = new String[myCurrencies.size()];
+        //if (myCurrencies == null) return new String[] {"Без интернета невозможно получение справки"};
         for (int i = 0; i < myCurrencies.size(); i++)
         {
             result[i] = myCurrencies.get(i).getCharCode() + " - " + myCurrencies.get(i).getName();
