@@ -1,12 +1,21 @@
 package com.example.currencyconverter.CurrencyActions;
 
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.util.List;
 
 public class CurrencyStore {
     private List<Currency> myCurrencies;
+    private String date;
+    private static NumberFormat formatter = new DecimalFormat("#0.0000");
 
-    public CurrencyStore(List<Currency> currencies) {
+    public CurrencyStore(List<Currency> currencies, String date) {
         myCurrencies = currencies;
+        this.date = date;
+    }
+
+    public String getDate() {
+        return date;
     }
 
     public String[] getCurrenciesShortnames() {
@@ -30,9 +39,11 @@ public class CurrencyStore {
 
     public String[] infoToString() {
         String[] result = new String[myCurrencies.size()];
-        //if (myCurrencies == null) return new String[] {"Без интернета невозможно получение справки"};
-        for (int i = 0; i < myCurrencies.size(); i++) {
-            result[i] = myCurrencies.get(i).getCharCode() + " - " + myCurrencies.get(i).getName();
+        result[0] = "Курсы валют в рублях на " + date + ":";
+        for (int i = 1; i < myCurrencies.size(); i++) {
+            result[i] = myCurrencies.get(i).getCharCode() + "(" +
+                    myCurrencies.get(i).getName() + ") = " +
+                    formatter.format(myCurrencies.get(i).getExchangeRate());
         }
         return result;
     }

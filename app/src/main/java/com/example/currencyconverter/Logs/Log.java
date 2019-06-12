@@ -62,6 +62,7 @@ public class Log {
 
     @Override
     public String toString() {
+        if (currencyTo == null) return "Просмотр курса на " + date;
         return count + " " + currencyFrom + " in " + currencyTo + " = " + value
                 + "\nДата курса: " + date;
     }

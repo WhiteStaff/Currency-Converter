@@ -16,7 +16,7 @@ import javax.xml.parsers.DocumentBuilderFactory;
 
 public class Parcer {
 
-    public static CurrencyStore parse(String a) {
+    public static CurrencyStore parse(String a, String date) {
         DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
         List<Currency> currencyList = new ArrayList<Currency>();
         try {
@@ -36,7 +36,7 @@ public class Parcer {
                 currencyList.add(current);
             }
 
-            return new CurrencyStore(currencyList);
+            return new CurrencyStore(currencyList, date);
         } catch (Exception e) {
             e.printStackTrace();
         }

@@ -1,6 +1,12 @@
 package com.example.currencyconverter.Activities;
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.text.InputType;
 import android.view.Menu;
@@ -30,6 +36,7 @@ import java.util.concurrent.ExecutionException;
 public class MainActivity extends AppCompatActivity {
 
     private CurrencyStore store = null;
+    private String courseDate = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,16 +56,19 @@ public class MainActivity extends AppCompatActivity {
         final int[] positions = {0, 0};
         final String[] date = {format.format(new Date())};
 
-
+        if (!hasConnection(getApplicationContext()))
+        {
+            out.setText("Нет интернета");
+            out.setTextColor(Color.RED);
+            return;
+        } else
         try {
-            store = new Request().execute(format.format(new Date())).get();
+            courseDate = format.format(new Date());
+            store = new Request().execute(courseDate).get();
         } catch (Exception e) {
             e.printStackTrace();
         }
-        if (store == null) {
-            out.setText("Нет интернета");
-            return;
-        }
+
         helpdata = store.getCurrenciesShortnames();
         final String[] data = helpdata;
 
@@ -71,6 +81,7 @@ public class MainActivity extends AppCompatActivity {
                 if (i2 < 10) day = "0" + i2;
                 if (i1 < 10) month = "0" + (i1 + 1);
                 date[0] = day + "/" + month + "/" + i;
+                courseDate = date[0];
             }
         });
 
@@ -81,9 +92,9 @@ public class MainActivity extends AppCompatActivity {
 
         inputValute.setAdapter(inputAdapter);
         // заголовок
-        inputValute.setPrompt("Title");
+        inputValute.setPrompt("From");
         // выделяем элемент
-        inputValute.setSelection(2);
+        inputValute.setSelection(0);
         // устанавливаем обработчик нажатия
         inputValute.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -105,9 +116,9 @@ public class MainActivity extends AppCompatActivity {
 
         outputValute.setAdapter(outputAdapter);
         // заголовок
-        outputValute.setPrompt("Title");
+        outputValute.setPrompt("To");
         // выделяем элемент
-        outputValute.setSelection(2);
+        outputValute.setSelection(0);
         // устанавливаем обработчик нажатия
         outputValute.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -125,8 +136,20 @@ public class MainActivity extends AppCompatActivity {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                try {
-                    CurrencyStore help = new Request().execute(date[0]).get();
+                CurrencyStore help = null;
+                if (!hasConnection(getApplicationContext()))
+                {
+                    out.setText("Нет интернета");
+                    out.setTextColor(Color.RED);
+                    return;
+                } else {
+                    try {
+                        help = new Request().execute(date[0]).get();
+                    } catch (ExecutionException e) {
+                        e.printStackTrace();
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
                     if (help.isEmpty()) {
                         out.setText("Нет курса");
                         return;
@@ -153,10 +176,6 @@ public class MainActivity extends AppCompatActivity {
                     out.setText(result);
                     Log log = new Log(count, data[positions[0]], data[positions[1]], result, date[0]);
                     LogsOperations.addNewLog(log, getApplicationContext());
-                } catch (ExecutionException e) {
-                    e.printStackTrace();
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
                 }
             }
         });
@@ -178,18 +197,58 @@ public class MainActivity extends AppCompatActivity {
         switch (id) {
             case R.id.info:
                 Intent intent1 = new Intent(getApplicationContext(), InfoActivity.class);
+                try {
+                    store = new Request().execute(courseDate).get();
+                } catch (ExecutionException e) {
+                    e.printStackTrace();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
                 if (store == null)
-                    intent1.putExtra("data", new String[]{"Без интернета невозможно получение справки"});
-                else
-                    intent1.putExtra("data", store.infoToString());
+                intent1.putExtra("data", new String[]{"Без интернета невозможно получение справки"});
+            else {
+                intent1.putExtra("data", store.infoToString());
+                LogsOperations.addNewLog(new Log(0.0, null, null,
+                        null, store.getDate()), getApplicationContext());
+            }
                 startActivity(intent1);
                 return true;
+
             case R.id.log:
                 Intent intent = new Intent(getApplicationContext(), LogsActivity.class);
                 startActivity(intent);
                 return true;
+            case R.id.reboot:
+                Intent mStartActivity = new Intent(getApplicationContext(), MainActivity.class);
+                int mPendingIntentId = 123456;
+                PendingIntent mPendingIntent = PendingIntent.getActivity(getApplicationContext(), mPendingIntentId, mStartActivity,
+                        PendingIntent.FLAG_CANCEL_CURRENT);
+                AlarmManager mgr = (AlarmManager) getApplicationContext().getSystemService(Context.ALARM_SERVICE);
+                mgr.set(AlarmManager.RTC, System.currentTimeMillis() + 10, mPendingIntent);
+                System.exit(0);
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    public static boolean hasConnection(final Context context)
+    {
+        ConnectivityManager cm = (ConnectivityManager)context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo wifiInfo = cm.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
+        if (wifiInfo != null && wifiInfo.isConnected())
+        {
+            return true;
+        }
+        wifiInfo = cm.getNetworkInfo(ConnectivityManager.TYPE_MOBILE);
+        if (wifiInfo != null && wifiInfo.isConnected())
+        {
+            return true;
+        }
+        wifiInfo = cm.getActiveNetworkInfo();
+        if (wifiInfo != null && wifiInfo.isConnected())
+        {
+            return true;
+        }
+        return false;
     }
 }
 

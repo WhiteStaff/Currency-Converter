@@ -42,7 +42,7 @@ public class Request extends AsyncTask<String, Integer, CurrencyStore> {
                 byte[] b = buf.array();
                 String str = new String(b);
 
-                return Parcer.parse(str);
+                return Parcer.parse(str, arg[0]);
             } else {
                 return null;
             }
