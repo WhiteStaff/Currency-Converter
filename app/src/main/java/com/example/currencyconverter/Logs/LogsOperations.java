@@ -11,9 +11,9 @@ import java.io.IOException;
 
 public class LogsOperations {
 
-    public static void mCreateAndSaveFile(String mJsonResponse, Context context) {
+    private static void mCreateAndSaveFile(String mJsonResponse, Context context) {
         try {
-            FileWriter file = new FileWriter("/data/data/" + context.getPackageName() + "/" + "logs.json");
+            FileWriter file = new FileWriter("/data/data/" + context.getPackageName() + "/logs.json");
             file.write(mJsonResponse);
             file.flush();
             file.close();
@@ -22,9 +22,9 @@ public class LogsOperations {
         }
     }
 
-    public static String mReadJsonData(Context context) {
+    private static String mReadJsonData(Context context) {
         try {
-            File f = new File("/data/data/" + context.getPackageName() + "/" + "logs.json");
+            File f = new File("/data/data/" + context.getPackageName() + "/logs.json");
             FileInputStream is = new FileInputStream(f);
             int size = is.available();
             byte[] buffer = new byte[size];
@@ -45,7 +45,7 @@ public class LogsOperations {
         saveLogsAsJSON(logs, context);
     }
 
-    public static void saveLogsAsJSON(Logs logs, Context context) {
+    private static void saveLogsAsJSON(Logs logs, Context context) {
         mCreateAndSaveFile(JSON.toJSONString(logs), context);
     }
 

@@ -1,7 +1,5 @@
 package com.example.currencyconverter.Activities;
 
-import android.app.AlarmManager;
-import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
@@ -156,7 +154,7 @@ public class MainActivity extends AppCompatActivity {
                     }
                     if (help.getByShortname(data[positions[0]]) == null ||
                             (help.getByShortname(data[positions[1]]) == null)) {
-                        out.setText("Цб не знал, ой");
+                        out.setText("ЦБ не знал курс");
                         return;
                     }
                     double from = help.getByShortname(data[positions[0]]).getExchangeRate();
@@ -220,11 +218,9 @@ public class MainActivity extends AppCompatActivity {
                 return true;
             case R.id.reboot:
                 Intent mStartActivity = new Intent(getApplicationContext(), MainActivity.class);
-                int mPendingIntentId = 123456;
-                PendingIntent mPendingIntent = PendingIntent.getActivity(getApplicationContext(), mPendingIntentId, mStartActivity,
-                        PendingIntent.FLAG_CANCEL_CURRENT);
-                AlarmManager mgr = (AlarmManager) getApplicationContext().getSystemService(Context.ALARM_SERVICE);
-                mgr.set(AlarmManager.RTC, System.currentTimeMillis() + 10, mPendingIntent);
+                startActivity(mStartActivity);
+                this.finish();
+            case R.id.exit:
                 System.exit(0);
         }
         return super.onOptionsItemSelected(item);
